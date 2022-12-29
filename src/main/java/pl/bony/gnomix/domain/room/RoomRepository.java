@@ -23,10 +23,10 @@ public class RoomRepository {
     }
 
 
-    public void createNewRoom(String number, List<BedType> beds) {
+    public Room createNewRoom(String number, List<BedType> beds) {
         Room newOne = new Room(number, beds);
         rooms.add(newOne);
-        System.out.println("I've created new Room: " + newOne);
+        return newOne;
 
     }
 }

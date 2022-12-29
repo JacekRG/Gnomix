@@ -1,23 +1,25 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org">
 <head>
-    <title>Utwórz nowy pokój</title>
+    <title>Utwórz nowy pokoj</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
 </head>
 <body>
-<h2>Wybierz odpowiedni pokój</h2>
+<h2>Dodaj nowego gościa</h2>
 <form th:action="@{/createNewRoom}" method="post">
     <p>Numer pokoju: <input type="text" name="number" required /></p>
-    <p>Wybór łóżek <select name="beds">
-            <option value="SINGLE">Łóżko pojedyncze</option>
-            <option value="DOUBLE">Łóżko podwójne</option>
-            <option value="SINGLE, DOUBLE">Łóżko podwójne + 1x pojedyncze </option>
-            <option value="DOUBLE, SINGLE, SINGLE">Łóżko podwójne + 2x pojedyncze</option>
-            <option value="DOUBLE, SINGLE, SINGLE, SINGLE">Łóżko podwójne + 3x pojedyncze</option>
+    <p>Rozkład Lóżek:
+        <select name="bedsDesc">
+            <option value="2">Podwójne</option>
+            <option value="1">Pojedyncze</option>
+            <option value="2+2">Podwójne + Podwójne</option>
+            <option value="2+1">Podwójne + Pojedyncze</option>
+            <option value="2+1+1">Podwójne + Pojedyncze + Pojedyncze</option>
+            <option value="2+1+1+1">Podwójne + Pojedyncze + Pojedyncze + Pojedyncze</option>
+            <option value="1+1">Pojedyncze + Pojedyncze</option>
         </select>
+    </p>
     <p><input type="submit" value="Submit" /></p>
 </form>
 </body>
 </html>
-
