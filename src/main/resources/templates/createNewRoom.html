@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Utwórz nowy pokój</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body>
+<h2>Wybierz odpowiedni pokój</h2>
+<form th:action="@{/createNewRoom}" method="post">
+    <p>Numer pokoju: <input type="text" name="number" required /></p>
+    <p>Wybór łóżek <select name="beds">
+            <option value="SINGLE">Łóżko pojedyncze</option>
+            <option value="DOUBLE">Łóżko podwójne</option>
+            <option value="SINGLE, DOUBLE">Łóżko podwójne + 1x pojedyncze </option>
+            <option value="DOUBLE, SINGLE, SINGLE">Łóżko podwójne + 2x pojedyncze</option>
+            <option value="DOUBLE, SINGLE, SINGLE, SINGLE">Łóżko podwójne + 3x pojedyncze</option>
+        </select>
+    <p><input type="submit" value="Submit" /></p>
+</form>
+</body>
+</html>
+

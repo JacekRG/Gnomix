@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Utwórz nowego gościa</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body>
+<h2>Dodaj nowego gościa</h2>
+<form th:action="@{/createNewGuest}" method="post">
+    <p>Imię: <input type="text" name="firstName" required /></p>
+    <p>Nazwisko: <input type="text" name="lastName" required/></p>
+    <p>Data urodzenia: <input type="date" name="dateOfBirth" required/></p>
+    <p>Płeć <select name="gender">
+            <option th:each="enum : ${T(pl.bony.gnomix.domain.guest.Gender).values()}"
+                    th:text="${enum.getGender()}"
+                    th:value="${enum.name()}">
+            </option>
+        </select></p>
+    <p><input type="submit" value="Submit" /></p>
+</form>
+</body>
+</html>
+

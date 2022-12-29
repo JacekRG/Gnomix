@@ -9,8 +9,10 @@
 <body>
 <h2>Lista pokoi</h2>
 <table>
-    <tr>
+    <tr th:each="room : ${rooms}">
         <td th:text="${room.number}"/>
+        <td th:text="${room.beds}"/>
+        <td th:text="${room.size}"/>
     </tr>
 </table>
 </body>
