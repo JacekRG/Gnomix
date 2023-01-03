@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-    <title>Utwórz nowy pokoj</title>
+    <title>Edytuj pokój</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css" />
@@ -24,28 +24,29 @@
     </div>
 </nav>
 <div class="p-3 text-center bg-light">
-    <h2 class="mb-3">Dodaj nowy pokój</h2>
+    <h2 class="mb-3">Edytuj pokój</h2>
 </div>
 <div class="container">
-    <form th:action="@{/rooms/create}" method="post">
+    <form th:action="@{/rooms/edit}" method="post">
+        <input type="hidden" name="id" th:value="${room.id}"/>
         <div class="form-group">
-            <label for="createnewroomnumber">Numer pokoju:</label>
-            <input type="text" name="number" required
-                   class="form-control" id="createnewroomnumber"/></p>
+            <label for="editroomnumber">Numer pokoju:</label>
+            <input type="text" name="number" th:value="${room.number}" required
+                   class="form-control" id="editroomnumber"/>
         </div>
         <div class="form-group">
-            <label for="createnewroombeds">Rozkład Lóżek:</label>
-            <select name="bedsDesc" class="form-control" id="createnewroombeds">
-                <option value="2">Podwójne</option>
-                <option value="1">Pojedyncze</option>
-                <option value="2+2">Podwójne + Podwójne</option>
-                <option value="2+1">Podwójne + Pojedyncze</option>
-                <option value="2+1+1">Podwójne + Pojedyncze + Pojedyncze</option>
-                <option value="2+1+1+1">Podwójne + Pojedyncze + Pojedyncze + Pojedyncze</option>
-                <option value="1+1">Pojedyncze + Pojedyncze</option>
+            <label for="editroombeds">Rozkład Lóżek:</label>
+            <select name="bedsDesc" class="form-control" id="editroombeds">
+            <option value="2">Podwójne</option>
+            <option value="1">Pojedyncze</option>
+            <option value="2+2">Podwójne + Podwójne</option>
+            <option value="2+1">Podwójne + Pojedyncze</option>
+            <option value="2+1+1">Podwójne + Pojedyncze + Pojedyncze</option>
+            <option value="2+1+1+1">Podwójne + Pojedyncze + Pojedyncze + Pojedyncze</option>
+            <option value="1+1">Pojedyncze + Pojedyncze</option>
             </select>
         </div>
-        <input type="submit" class="btn btn-primary" value="Utwórz pokój" />
+        <input type="submit" class="btn btn-primary" value="Edytuj pokój" />
     </form>
 </div>
 </body>

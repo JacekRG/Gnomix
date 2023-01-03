@@ -5,10 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pl.bony.gnomix.controllers.dto.GuestCreationDTO;
+import pl.bony.gnomix.controllers.dto.GuestUpdateDTO;
 import pl.bony.gnomix.domain.guest.Gender;
 import pl.bony.gnomix.domain.guest.Guest;
 import pl.bony.gnomix.domain.guest.GuestService;
@@ -16,6 +15,7 @@ import pl.bony.gnomix.domain.guest.GuestService;
 import java.time.LocalDate;
 
 @Controller
+@RequestMapping("/guests")
 public class GuestController {
 
     private GuestService guestService;
@@ -25,23 +25,47 @@ public class GuestController {
         this.guestService = service;
     }
 
-    @GetMapping("/guests")
+    @GetMapping
     public String guests(Model model) {
         model.addAttribute("guests", this.guestService.findAll());
         return "guests";
     }
 
-    @GetMapping("/createNewGuest")
+    @GetMapping("/create")
     public String createNewGuest() {
         return "createNewGuest";
     }
 
-    @PostMapping("/createNewGuest")
+    @PostMapping
     public String handleCreateNewGuest(GuestCreationDTO dto) {
 
         System.out.println(dto);
         this.guestService.createNewGuest(dto);
 
-        return "redirect:guests";
+        return "redirect:/guests";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String removeGuest(@PathVariable long id) {
+        this.guestService.removeById(id);
+
+        return "redirect:/guests";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editGuest(@PathVariable long id, Model model) {
+
+        Guest guest = this.guestService.getById(id);
+        model.addAttribute("guest", guest);
+
+        return "editGuest";
+    }
+
+    @PostMapping("/edit")
+    public String editGuest(GuestUpdateDTO updatedGuest) {
+
+        this.guestService.update(updatedGuest);
+
+        return "redirect:/guests";
     }
 }

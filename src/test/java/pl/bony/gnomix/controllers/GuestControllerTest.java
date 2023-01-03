@@ -51,13 +51,13 @@ public class GuestControllerTest {
     @Test
     public void handlePost() throws Exception {
         String postContent = "firstName=Ala&lastName=Makota&dateOfBirth=1991-01-01&gender=FEMALE";
-        MockHttpServletRequestBuilder request = post("/createNewGuest")
+        MockHttpServletRequestBuilder request = post("/guests")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .content(postContent);
 
         mockMvc.perform(request)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("guests"));
+                .andExpect(redirectedUrl("/guests"));
 
         GuestCreationDTO dto = new GuestCreationDTO(
                 "Ala",
@@ -66,5 +66,38 @@ public class GuestControllerTest {
                 Gender.valueOf("FEMALE"));
 
         verify(guestService, Mockito.times(1)).createNewGuest(dto);
+    }
+
+    @Test
+    public void handleDelete() throws Exception {
+
+        MockHttpServletRequestBuilder request =
+                get("/guests/delete/21");
+
+        mockMvc.perform(request)
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/guests"));
+
+        verify(guestService, Mockito.times(1)).removeById(21);
+
+    }
+
+    @Test
+    public void handleShowEditForm() throws Exception {
+
+        MockHttpServletRequestBuilder request =
+                get("/guests/edit/21");
+
+        Guest guest = new Guest("Jan", "Kowalski", LocalDate.of(1991, 1, 1), Gender.MALE);
+
+        given(guestService.getById(21)).willReturn(guest);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("guest"))
+                .andExpect(view().name("editGuest"));
+
+        verify(guestService, Mockito.times(1)).getById(21);
+
     }
 }

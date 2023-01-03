@@ -1,31 +1,34 @@
 package pl.bony.gnomix.domain.guest;
 
-
 import org.springframework.stereotype.Repository;
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-
 @Repository
 public class GuestRepository {
-
-    List<Guest> guests = new ArrayList<>();
-
-    public GuestRepository() {
-        Guest guest = new Guest("Jan", "Kowalski", LocalDate.of(1991,1,1), Gender.MALE);
-        Guest gabriel = new Guest("Gabriel", "Narutowicz", LocalDate.of(1865,3,29), Gender.MALE);
-        this.guests.addAll(List.of(guest,gabriel));
-    }
-
-    public List<Guest> findAll(){
-        return this.guests;
-    }
-
+    @PersistenceContext
+    EntityManager entityManager;
+    @Transactional
     public void createNewGuest(String firstName, String lastName, LocalDate dateOfBirth, Gender gender) {
-
         Guest newOne = new Guest(firstName, lastName, dateOfBirth, gender);
-        this.guests.add(newOne);
-
+        entityManager.persist(newOne);
+    }
+    @Transactional
+    public void removeById(long id) {
+        this.entityManager.remove(this.getById(id));
+    }
+    public Guest getById(long id) {
+        return this.entityManager.find(Guest.class, id);
+    }
+    public List<Guest> findAll() {
+        return this.entityManager
+                .createQuery("SELECT guest FROM Guest guest", Guest.class)
+                .getResultList();
+    }
+    @Transactional
+    public Guest update(Guest guest) {
+        return this.entityManager.merge(guest);
     }
 }

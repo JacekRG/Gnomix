@@ -2,7 +2,6 @@ package pl.bony.gnomix.domain.room;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.bony.gnomix.controllers.dto.RoomCreationDTO;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,24 +10,44 @@ import java.util.stream.Collectors;
 
 @Service
 public class RoomService {
-    private RoomRepository roomRepository;
+    private RoomRepository repository;
 
     @Autowired
-    public RoomService(RoomRepository roomRepository) {
-        this.roomRepository = roomRepository;
+    public RoomService(RoomRepository repository) {
+        this.repository = repository;
     }
 
     public List<Room> findAll() {
-        return this.roomRepository.findAll();
-
+        return repository.findAll();
     }
+
     public Room createNewRoom(String roomNumber, String bedsDesc) {
+        List<BedType> beds = getBedTypesList(bedsDesc);
+        return this.repository.createNewRoom(roomNumber, beds);
+    }
+
+    public void removeById(long id) {
+        this.repository.removeById(id);
+    }
+
+    public Room findById(long id) {
+        return this.repository.findById(id);
+    }
+
+    public void update(long id, String number, String bedsDesc) {
+        Room toUpdate = this.repository.findById(id);
+        List<BedType> beds = getBedTypesList(bedsDesc);
+        toUpdate.update(number, beds);
+        this.repository.update(toUpdate);
+    }
+
+    private List<BedType> getBedTypesList(String bedsDesc) {
         String[] splitedBedDec = bedsDesc.split("\\+");
-        List<BedType> beds = Arrays.stream(splitedBedDec)
+        return Arrays.stream(splitedBedDec)
                 .map(stringToBedTypeMapping)
                 .collect(Collectors.toList());
-        return this.roomRepository.createNewRoom(roomNumber, beds);
     }
+
     private final Function<String, BedType> stringToBedTypeMapping = value -> {
         if ("1".equals(value)) {
             return BedType.SINGLE;
