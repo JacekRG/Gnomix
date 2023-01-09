@@ -3,6 +3,7 @@ package pl.bony.gnomix.domain.room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -23,22 +24,25 @@ public class RoomService {
 
     public Room createNewRoom(String roomNumber, String bedsDesc) {
         List<BedType> beds = getBedTypesList(bedsDesc);
-        return this.repository.createNewRoom(roomNumber, beds);
+
+        Room newOne = new Room(roomNumber, beds);
+
+        return this.repository.save(newOne);
     }
 
     public void removeById(long id) {
-        this.repository.removeById(id);
+        this.repository.deleteById(id);
     }
 
     public Room findById(long id) {
-        return this.repository.findById(id);
+        return this.repository.getById(id);
     }
 
     public void update(long id, String number, String bedsDesc) {
-        Room toUpdate = this.repository.findById(id);
+        Room toUpdate = this.repository.getById(id);
         List<BedType> beds = getBedTypesList(bedsDesc);
         toUpdate.update(number, beds);
-        this.repository.update(toUpdate);
+        this.repository.save(toUpdate);
     }
 
     private List<BedType> getBedTypesList(String bedsDesc) {
@@ -57,4 +61,17 @@ public class RoomService {
             throw new IllegalArgumentException();
         }
     };
-}
+
+    public List<Room> getRoomsForSize(int size) {
+
+        if (size <= 0) {
+            return new ArrayList<>();
+        }
+
+            return this.repository.findAll()
+                    .stream()
+                    .filter(r -> r.getSize() >= size)
+                    .collect(Collectors.toList());
+        }
+    }
+

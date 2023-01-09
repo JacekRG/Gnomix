@@ -2,17 +2,16 @@ package pl.bony.gnomix.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.bony.gnomix.controllers.dto.GuestCreationDTO;
 import pl.bony.gnomix.controllers.dto.GuestUpdateDTO;
-import pl.bony.gnomix.domain.guest.Gender;
 import pl.bony.gnomix.domain.guest.Guest;
 import pl.bony.gnomix.domain.guest.GuestService;
 
-import java.time.LocalDate;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/guests")
@@ -37,12 +36,15 @@ public class GuestController {
     }
 
     @PostMapping
-    public String handleCreateNewGuest(GuestCreationDTO dto) {
+    public String handleCreateNewGuest(@Valid GuestCreationDTO dto, BindingResult result, Model model) {
 
-        System.out.println(dto);
-        this.guestService.createNewGuest(dto);
-
-        return "redirect:/guests";
+        if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
+            return "createNewGuest";
+        } else {
+            this.guestService.createNewGuest(dto);
+            return "redirect:/guests";
+        }
     }
 
     @GetMapping("/delete/{id}")

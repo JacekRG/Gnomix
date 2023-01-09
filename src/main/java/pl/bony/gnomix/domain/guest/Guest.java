@@ -19,7 +19,7 @@ public class Guest {
     private String lastName;
     private LocalDate birthDate;
     private Gender gender;
-    public Guest() {
+     Guest() {
     }
     public Guest(String firstName, String lastName, LocalDate birthDate, Gender gender) {
         this.firstName = firstName;

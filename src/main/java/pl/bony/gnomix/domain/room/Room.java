@@ -23,7 +23,7 @@ public class Room {
     private List<BedType> beds;
     private int size;
 
-    public Room() {
+     Room() {
     }
 
     public Room(String number, List<BedType> beds) {
