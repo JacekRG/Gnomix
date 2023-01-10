@@ -56,4 +56,13 @@ public class ReservationController {
             return "reservationStepOne";
         }
     }
+    @PostMapping("/create/stepthree")
+    public String finalizeReservation(long roomId,
+                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate toDate,
+                                      String email){
+
+        this.reservationService.createTemporaryReservation(roomId, fromDate, toDate, email);
+        return  "reservationConfirmed";
+    }
 }

@@ -1,11 +1,9 @@
 package pl.bony.gnomix.domain.guest;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.bony.gnomix.controllers.dto.GuestCreationDTO;
 import pl.bony.gnomix.controllers.dto.GuestUpdateDTO;
-
 
 import java.util.List;
 
@@ -25,9 +23,8 @@ public class GuestService {
 
     public void createNewGuest(GuestCreationDTO dto) {
 
-        Guest newOne = new Guest(dto.getFirstName(), dto.getLastName(), dto.getDateOfBirth(), dto.getGender());
+        Guest newOne = new Guest(dto.getFirstName(), dto.getLastName(), dto.getDateOfBirth(), dto.getGender(), dto.isVip());
         this.repository.save(newOne);
-
     }
 
     public void removeById(long id) {
@@ -44,7 +41,8 @@ public class GuestService {
                 updatedGuest.getFirstName(),
                 updatedGuest.getLastName(),
                 updatedGuest.getDateOfBirth(),
-                updatedGuest.getGender()
+                updatedGuest.getGender(),
+                updatedGuest.getCustomerId()
         );
         this.repository.save(byId);
     }

@@ -2,14 +2,16 @@ package pl.bony.gnomix.domain.reservation;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import pl.bony.gnomix.domain.reservation.events.TempReservationCreatedEvent;
 import pl.bony.gnomix.domain.room.Room;
 import pl.bony.gnomix.domain.room.RoomService;
-
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -18,13 +20,15 @@ public class ReservationService {
 
     private ReservationRepository repository;
     private RoomService roomService;
+    private ApplicationEventPublisher publisher;
 
     @Autowired
     public ReservationService(
             ReservationRepository repository,
-            RoomService roomService) {
+            RoomService roomService, ApplicationEventPublisher applicationEventPublisher) {
         this.repository = repository;
         this.roomService = roomService;
+        this.publisher = applicationEventPublisher;
     }
 
     public List<Reservation> getAll() {
@@ -35,22 +39,21 @@ public class ReservationService {
 
         List<Room> availableRooms = new ArrayList<>();
 
-        if(size<0 || size>10) {
+        if (size < 0 || size > 10) {
             throw new IllegalArgumentException("Wrong size param [1-10]");
         }
 
-        if(from.isEqual(to) || to.isBefore(from)) {
+        if (from.isEqual(to) || to.isBefore(from)) {
             throw new IllegalArgumentException("Wrong dates");
         }
 
         List<Room> roomsWithProperSize = this.roomService.getRoomsForSize(size);
 
-        for(Room room : roomsWithProperSize) {
-            if(this.checkIfRoomAvailableForDates(room,from,to)) {
+        for (Room room : roomsWithProperSize) {
+            if (this.checkIfRoomAvailableForDates(room, from, to)) {
                 availableRooms.add(room);
             }
         }
-
 
 
         return availableRooms;
@@ -60,19 +63,26 @@ public class ReservationService {
 
         List<Reservation> reservations = this.getAllReservationsForRoom(room);
 
-        reservations
+        Optional<Reservation> any = reservations
                 .stream()
-                .filter(reservationStartsAtTheSameDate(from))
-                .filter(reservationEndsAtTheSameDate(to))
-                .filter(reservationStartsBetween(from,to))
-                .filter(reservationEndsBetween(from,to))
-                .collect(Collectors.toList());
+                .filter(
+                        reservationStartsAtTheSameDate(from)
+                                .or(reservationEndsAtTheSameDate(to))
+                                .or(reservationStartsBetween(from, to))
+                                .or(reservationEndsBetween(from, to))
+                                .or(reservationContains(from, to))
+                )
+                .findAny();
 
-        return reservations.isEmpty();
+        return any.isEmpty();
     }
 
     static Predicate<Reservation> reservationEndsAtTheSameDate(LocalDate to) {
-        return reservation -> reservation.getToDate().equals(to);
+        return reservation -> reservation.getToDate().isEqual(to);
+    }
+
+    static Predicate<Reservation> reservationContains(LocalDate from, LocalDate to) {
+        return reservation -> reservation.getFromDate().isBefore(from) && reservation.getToDate().isAfter(to);
     }
 
     static Predicate<Reservation> reservationStartsBetween(LocalDate from, LocalDate to) {
@@ -83,14 +93,28 @@ public class ReservationService {
         return reservation -> reservation.getToDate().isAfter(from) && reservation.getToDate().isBefore(to);
     }
 
-    static Predicate<Reservation> reservationStartsAtTheSameDate(LocalDate from) {
+   public static Predicate<Reservation> reservationStartsAtTheSameDate(LocalDate from) {
         return reservation -> reservation.getFromDate().isEqual(from);
     }
 
     private List<Reservation> getAllReservationsForRoom(Room room) {
         return this.repository.findAll()
                 .stream()
-                .filter(reservation -> reservation.getRoom().getId()==room.getId())
+                .filter(reservation -> reservation.getRoom().getId() == room.getId())
                 .collect(Collectors.toList());
+    }
+
+    public boolean createTemporaryReservation(long roomId, LocalDate fromDate, LocalDate toDate, String email) {
+        Optional<Room> room = this.roomService.getRoomById(roomId);
+
+        room.ifPresent(r -> {
+            Reservation tmp = new Reservation(fromDate, toDate, r, email);
+            this.repository.save(tmp);
+            TempReservationCreatedEvent event = new TempReservationCreatedEvent(this, email, r.getId());
+            publisher.publishEvent(event);
+            System.out.println("UDALO SIE UTWORZYC REZERWACJE");
+
+        });
+        return room.isPresent();
     }
 }
