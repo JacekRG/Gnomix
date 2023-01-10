@@ -8,11 +8,15 @@ import java.time.LocalDate;
 
 @Data
 public class GuestUpdateDTO {
+
     private final long id;
     private final String firstName;
     private final String lastName;
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private final LocalDate dateOfBirth;
+
     private final Gender gender;
+
     private final String customerId;
 }

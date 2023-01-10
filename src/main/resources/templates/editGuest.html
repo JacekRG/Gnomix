@@ -21,6 +21,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="/rooms">Pokoje</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/reservations">Rezerwacje</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/reservations/create/stepone">Utwórz rezerwacje</a>
+            </li>
         </ul>
     </div>
 </nav>
@@ -57,6 +63,12 @@
                 <option value="MALE">Mężyczna</option>
                 <option value="FEMALE">Kobieta</option>
             </select>
+        </div>
+
+        <div class="form-group">
+            <label for="editguestcustomerID">Numer Klienta:</label>
+            <input type="text" name="customerId" th:value="${guest.customerId}"
+                   class="form-control" id="editguestcustomerID"/>
         </div>
 
         <input type="submit" class="btn btn-primary" value="Edytuj gościa" />

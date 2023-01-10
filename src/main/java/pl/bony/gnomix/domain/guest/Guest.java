@@ -14,9 +14,11 @@ import java.time.LocalDate;
 @Setter(value = AccessLevel.NONE)
 @Entity
 public class Guest {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
@@ -25,6 +27,22 @@ public class Guest {
     private String customerId;
 
     Guest() {
+
+    }
+
+    public Guest(String firstName, String lastName, LocalDate birthDate, Gender gender) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.vip = false;
+    }
+
+    public Guest(String firstName, String lastName, LocalDate dateOfBirth) {
+        this.firstName = firstName;
+        this.lastName= lastName;
+        this.birthDate = dateOfBirth;
     }
 
     public void update(String firstName, String lastName, LocalDate birthDate, Gender gender, String customerId) {
@@ -37,6 +55,9 @@ public class Guest {
     }
 
     public Guest(String firstName, String lastName, LocalDate birthDate, Gender gender, boolean vip) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
         this.gender = gender;
         this.vip = vip;
     }
