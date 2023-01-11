@@ -22,8 +22,12 @@ public class Room {
     @ElementCollection(targetClass = BedType.class)
     private List<BedType> beds;
     private int size;
+    private String description;
 
-     Room() {
+    @ElementCollection(targetClass = String.class)
+    private List<String> photosUrls;
+
+    Room() {
     }
 
     public Room(String number, List<BedType> beds) {
@@ -40,6 +44,11 @@ public class Room {
         this.size = calculateSize(bedsField);
     }
 
+    public Room(String number, List<BedType> beds, int size, String description, List<String> photosUrls) {
+        this(number, beds);
+        this.description = description;
+        this.photosUrls = photosUrls;
+    }
 
     public void update(String number, List<BedType> beds) {
         if (beds == null) {
@@ -47,6 +56,17 @@ public class Room {
         }
         this.number = number;
         this.beds = beds;
+        this.size = calculateSize(beds);
+
+    }
+    public void update(String number, List<BedType> beds, String description, List<String> photosUrls) {
+        if (beds == null) {
+            throw new IllegalArgumentException("Beds can not be null");
+        }
+        this.number = number;
+        this.beds = beds;
+        this.description = description;
+        this.photosUrls = photosUrls;
         this.size = calculateSize(beds);
 
     }

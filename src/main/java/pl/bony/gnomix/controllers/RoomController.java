@@ -1,6 +1,5 @@
 package pl.bony.gnomix.controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.bony.gnomix.domain.room.dto.RoomCreateDTO;
+import pl.bony.gnomix.domain.room.dto.RoomUpdateDTO;
 import pl.bony.gnomix.domain.room.Room;
 import pl.bony.gnomix.domain.room.RoomService;
 
@@ -23,7 +24,7 @@ public class RoomController {
     }
 
     @GetMapping
-    public String getAllRooms(Model model) {
+    public String getRooms(Model model) {
         model.addAttribute("rooms", this.roomService.findAll());
         return "rooms";
     }
@@ -34,14 +35,16 @@ public class RoomController {
     }
 
     @PostMapping("/create")
-    public String handleCreateNewRoom(String number, String bedsDesc) {
-        this.roomService.createNewRoom(number, bedsDesc);
+    public String handleCreateNewRoom(RoomCreateDTO dto) {
+
+        this.roomService.createNewRoom(dto.number(), dto.bedsDesc(), dto.description(), dto.photosUrls());
 
         return "redirect:/rooms";
     }
 
     @GetMapping("/delete/{id}")
     public String removeRoom(@PathVariable long id) {
+
         this.roomService.removeById(id);
 
         return "redirect:/rooms";
@@ -57,9 +60,9 @@ public class RoomController {
     }
 
     @PostMapping("/edit")
-    public String editRoom(long id, String number, String bedsDesc) {
+    public String editRoom(RoomUpdateDTO dto) {
 
-        this.roomService.update(id, number,  bedsDesc);
+        this.roomService.update(dto.id(), dto.number(), dto.bedsDesc(), dto.description(), dto.photosUrls());
 
         return "redirect:/rooms";
     }

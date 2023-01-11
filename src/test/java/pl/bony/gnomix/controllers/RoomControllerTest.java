@@ -15,14 +15,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import pl.bony.gnomix.controllers.dto.GuestCreationDTO;
-import pl.bony.gnomix.domain.guest.Gender;
-import pl.bony.gnomix.domain.guest.Guest;
 import pl.bony.gnomix.domain.room.BedType;
 import pl.bony.gnomix.domain.room.Room;
 import pl.bony.gnomix.domain.room.RoomService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @WebMvcTest(RoomController.class)
@@ -58,7 +54,7 @@ public class RoomControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/rooms"));
 
-        verify(roomService, Mockito.times(1)).createNewRoom("139", "2+1");
+        verify(roomService, Mockito.times(1)).createNewRoom("139", "2+1", null, null);
     }
 
     @Test
@@ -103,6 +99,6 @@ public class RoomControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/rooms"));
 
-        verify(roomService, Mockito.times(1)).update(21, "139", "2+1");
+        verify(roomService, Mockito.times(1)).update(21, "139", "2+1", null, null);
     }
 }

@@ -1,4 +1,4 @@
-package pl.bony.gnomix.controllers.dto;
+package pl.bony.gnomix.domain.guest.dto;
 
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;

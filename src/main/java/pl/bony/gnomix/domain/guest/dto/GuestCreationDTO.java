@@ -1,4 +1,4 @@
-package pl.bony.gnomix.controllers.dto;
+package pl.bony.gnomix.domain.guest.dto;
 
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,18 +12,18 @@ import java.util.Objects;
 public class GuestCreationDTO {
 
     @NotBlank
-    private final String firstName;
+    private String firstName;
 
     @NotBlank
-    private final String lastName;
+    private String lastName;
 
     @Past(message = "Data urodzenia musi być w przeszłości")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private final LocalDate dateOfBirth;
+    private LocalDate dateOfBirth;
 
-    private final Gender gender;
+    private Gender gender;
 
-    private final boolean vip;
+    private boolean vip;
 
     public GuestCreationDTO(String firstName, String lastName, LocalDate dateOfBirth, Gender gender, String vip) {
 
@@ -32,7 +32,11 @@ public class GuestCreationDTO {
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
 
-        this.vip = vip != null && vip.equals("on");
+        if(vip==null || !vip.equals("on")) {
+            this.vip = false;
+        } else {
+            this.vip = true;
+        }
     }
 
     public String getFirstName() {
@@ -57,16 +61,10 @@ public class GuestCreationDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         GuestCreationDTO that = (GuestCreationDTO) o;
-        return vip == that.vip
-                && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName)
-                && Objects.equals(dateOfBirth, that.dateOfBirth) && gender == that.gender;
+        return vip == that.vip && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(dateOfBirth, that.dateOfBirth) && gender == that.gender;
     }
 
     @Override

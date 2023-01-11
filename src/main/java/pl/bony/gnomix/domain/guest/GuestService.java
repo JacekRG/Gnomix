@@ -2,8 +2,9 @@ package pl.bony.gnomix.domain.guest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.bony.gnomix.controllers.dto.GuestCreationDTO;
-import pl.bony.gnomix.controllers.dto.GuestUpdateDTO;
+import pl.bony.gnomix.domain.guest.dto.GuestCreationDTO;
+import pl.bony.gnomix.domain.guest.dto.GuestUpdateDTO;
+
 
 import java.time.LocalDate;
 import java.util.List;

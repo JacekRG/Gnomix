@@ -25,7 +25,7 @@ public class RoomServiceTest {
         List<BedType> bedTypes = List.of(BedType.DOUBLE, BedType.SINGLE, BedType.SINGLE);
         Room r = new Room("102", bedTypes);
 
-        rs.createNewRoom("102", "2+1+1");
+        rs.createNewRoom("102", "2+1+1", null, null);
 
         verify(roomRepository).save(roomCaptor.capture());
         assertEquals("102", roomCaptor.getValue().getNumber());
