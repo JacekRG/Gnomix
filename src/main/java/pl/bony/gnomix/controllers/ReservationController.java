@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import pl.bony.gnomix.domain.reservation.ReservationService;
 import pl.bony.gnomix.domain.room.Room;
 
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

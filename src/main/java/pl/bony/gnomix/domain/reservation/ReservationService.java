@@ -2,6 +2,7 @@ package pl.bony.gnomix.domain.reservation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import pl.bony.gnomix.domain.guest.Guest;
 import pl.bony.gnomix.domain.reservation.events.TempReservationCreatedEvent;
@@ -27,7 +28,7 @@ public class ReservationService {
     @Autowired
     public ReservationService(
             ReservationRepository repository,
-            RoomService roomService,
+            @Lazy RoomService roomService,
             ApplicationEventPublisher publisher) {
         this.repository = repository;
         this.roomService = roomService;

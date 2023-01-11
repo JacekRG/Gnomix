@@ -30,6 +30,13 @@ public class Room {
     Room() {
     }
 
+//    public Room(String number, List<BedType> beds, String description, List<String> photosUrls) {
+//        this.number = number;
+//        this.beds = beds;
+//        this.description = description;
+//        this.photosUrls = photosUrls;
+//    }
+
     public Room(String number, List<BedType> beds) {
 
         if (beds == null) {
@@ -44,10 +51,11 @@ public class Room {
         this.size = calculateSize(bedsField);
     }
 
-    public Room(String number, List<BedType> beds, int size, String description, List<String> photosUrls) {
+    public Room(String number, List<BedType> beds, String description, List<String> photosUrls) {
         this(number, beds);
         this.description = description;
         this.photosUrls = photosUrls;
+        this.size = calculateSize(beds);
     }
 
     public void update(String number, List<BedType> beds) {

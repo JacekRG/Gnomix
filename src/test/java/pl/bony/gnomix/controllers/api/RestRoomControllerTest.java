@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
+import pl.bony.gnomix.domain.room.RoomService;
 import pl.bony.gnomix.domain.room.dto.RoomAvailableDTO;
 import pl.bony.gnomix.domain.reservation.ReservationService;
 import pl.bony.gnomix.domain.room.Room;
@@ -36,6 +37,8 @@ class RestRoomControllerTest {
 
     @MockBean
     private ReservationService reservationService;
+    @MockBean
+    private RoomService roomService;
 
     @Autowired
     private ObjectMapper mapper;
