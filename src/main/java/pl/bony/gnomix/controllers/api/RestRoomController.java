@@ -1,5 +1,6 @@
 package pl.bony.gnomix.controllers.api;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -51,6 +52,8 @@ public class RestRoomController {
         this.roomService.createNewRoom(dto.roomNumber(), dto.beds(), dto.description(), dto.photosUrls());
     }
 
+    @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(responseCode = "403", description = "Forbidden, reservation for given room exists")
     @DeleteMapping("api/rooms/{id}")
     public void deleteRoom(@PathVariable long id) {
         try {

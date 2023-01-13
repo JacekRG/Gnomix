@@ -3,8 +3,10 @@ package pl.bony.gnomix.domain.room;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RoomRepository extends JpaRepository <Room, Long> {
+import java.util.List;
 
+public interface RoomRepository extends JpaRepository<Room, Long> {
 
+    List<Room> findBySizeIsGreaterThanEqual(Integer size);
 
 }

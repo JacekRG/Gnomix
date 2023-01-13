@@ -111,10 +111,7 @@ public class RoomService {
             return new ArrayList<>();
         }
 
-        return this.repository.findAll()
-                .stream()
-                .filter( r -> r.getSize()>=size)
-                .collect(Collectors.toList());
+        return this.repository.findBySizeIsGreaterThanEqual(size);
     }
 
     public Optional<Room> getRoomById(long roomId) {

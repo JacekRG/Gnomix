@@ -16,7 +16,7 @@ import java.util.UUID;
 @Entity
 public class Room {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String number;
     @ElementCollection(targetClass = BedType.class)
