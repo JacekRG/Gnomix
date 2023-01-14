@@ -59,8 +59,6 @@ public class ReservationService {
             }
         }
 
-
-
         return availableRooms;
     }
 
@@ -145,10 +143,8 @@ public class ReservationService {
 
     public void removeUnconfirmedReservations() {
 
-        this.repository
-                .findAll()
+        this.repository.findByConfirmed(Boolean.FALSE)
                 .stream()
-                .filter(reservation -> !reservation.isConfirmed())
                 .filter(reservation -> reservation.getCreationDate().plus(60, ChronoUnit.MINUTES)
                         .isBefore(LocalDateTime.now()))
                 .forEach(reservation ->
@@ -163,5 +159,10 @@ public class ReservationService {
             byId.get().setOwner(g);
             this.repository.save(byId.get());
         }
+    }
+
+    @Autowired
+    public void setRoomService(RoomService roomService) {
+        this.roomService = roomService;
     }
 }

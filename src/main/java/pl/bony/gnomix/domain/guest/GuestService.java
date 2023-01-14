@@ -58,13 +58,7 @@ public class GuestService {
 
     public Guest getGuestByCustomerId(String firstName, String lastName, LocalDate dateOfBirth, String customerId) {
 
-        Optional<Guest> first = this.repository.findAll()
-                .stream()
-                .filter(guest -> guest.getCustomerId().equals(customerId))
-                .filter(guest -> guest.getFirstName().equals(firstName))
-                .filter(guest -> guest.getLastName().equals(lastName))
-                .filter(guest -> guest.getBirthDate().equals(dateOfBirth))
-                .findFirst();
+        Optional<Guest> first = this.repository.findTop1ByCustomerIdAndFirstNameAndLastNameAndBirthDate(customerId, firstName, lastName, dateOfBirth);
 
         return first.get();
     }
