@@ -21,7 +21,7 @@ public class RoomService {
     private ReservationService reservationService;
 
     @Autowired
-    public RoomService(RoomRepository repository, @Lazy ReservationService reservationService) {
+    public RoomService(RoomRepository repository,  @Lazy ReservationService reservationService) {
         this.repository = repository;
         this.reservationService = reservationService;
     }
