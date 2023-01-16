@@ -36,6 +36,7 @@ public class RoomController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     public String handleCreateNewRoom(RoomCreateDTO dto) {
 
         this.roomService.createNewRoom(dto.number(), dto.bedsDesc(), dto.description(), dto.photosUrls());
