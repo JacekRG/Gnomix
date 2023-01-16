@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import pl.bony.gnomix.domain.room.BedType;
@@ -22,6 +23,7 @@ import pl.bony.gnomix.domain.room.RoomService;
 import java.util.List;
 
 @WebMvcTest(RoomController.class)
+@WithMockUser(username = "ali", roles = {"RECEPTION"})
 public class RoomControllerTest {
 
     @Autowired
@@ -44,6 +46,7 @@ public class RoomControllerTest {
                 .andExpect(content().string(containsString("123A")));
     }
     @Test
+    @WithMockUser(username = "ali", roles = {"MANAGER"})
     public void handlePost() throws Exception {
         String postContent = "number=139&bedsDesc=2%2B1";
         MockHttpServletRequestBuilder request = post("/rooms/create")
@@ -58,6 +61,7 @@ public class RoomControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "ali", roles = {"MANAGER"})
     public void handleDelete() throws Exception {
 
         MockHttpServletRequestBuilder request =
