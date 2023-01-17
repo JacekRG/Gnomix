@@ -35,7 +35,8 @@ public class Reservation {
         this.room = room;
     }
 
-    public Reservation(LocalDate fromDate, LocalDate toDate, boolean confirmed, LocalDateTime creationDate, String email, Guest owner, Room room) {
+    public Reservation(LocalDate fromDate, LocalDate toDate, boolean confirmed, LocalDateTime creationDate,
+                       String email, Guest owner, Room room) {
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.confirmed = confirmed;
@@ -45,7 +46,8 @@ public class Reservation {
         this.room = room;
     }
 
-    public Reservation(LocalDate fromDate, LocalDate toDate, boolean confirmed, LocalDateTime creationDate, Guest owner, Room room) {
+    public Reservation(LocalDate fromDate, LocalDate toDate, boolean confirmed, LocalDateTime creationDate,
+                       Guest owner, Room room) {
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.confirmed = confirmed;

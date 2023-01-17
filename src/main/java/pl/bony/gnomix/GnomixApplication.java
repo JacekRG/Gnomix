@@ -8,9 +8,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 public class GnomixApplication {
 
-	public static void main(String[] args) {
-
-		SpringApplication.run(GnomixApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(GnomixApplication.class, args);
+    }
 
 }

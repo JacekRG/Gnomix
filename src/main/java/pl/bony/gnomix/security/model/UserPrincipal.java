@@ -9,9 +9,9 @@ import java.util.stream.Collectors;
 
 public class UserPrincipal implements UserDetails {
 
-    private String password;
-    private String username;
-    private List<GrantedAuthority> roles;
+    private final String password;
+    private final String username;
+    private final List<GrantedAuthority> roles;
 
     public UserPrincipal(User user) {
 

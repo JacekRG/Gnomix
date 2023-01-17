@@ -28,14 +28,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
-        if(request.getServletPath().equals("/login") || request.getServletPath().equals("api/refreshtokeb")) {
+        if (request.getServletPath().equals("/login") || request.getServletPath().equals("api/refreshtokeb")) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
 
-            if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 
                 try {
                     String token = authorizationHeader.substring("Bearer ".length());
@@ -44,8 +45,10 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     DecodedJWT decodedToken = verifier.verify(token);
                     String username = decodedToken.getSubject();
                     List<String> roles = decodedToken.getClaim("roles").asList(String.class);
-                    List<SimpleGrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
+                    List<SimpleGrantedAuthority> authorities = roles.stream().map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList());
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username,
+                            null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                     filterChain.doFilter(request, response);
                 } catch (Exception exception) {
@@ -53,7 +56,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
                     Map<String, String> errorResponse = new HashMap<>();
-                    errorResponse.put("error",  exception.getMessage());
+                    errorResponse.put("error", exception.getMessage());
 
                     response.setContentType(APPLICATION_JSON_VALUE);
 
@@ -67,3 +70,4 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     }
 }
+

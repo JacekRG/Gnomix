@@ -1,6 +1,5 @@
 package pl.bony.gnomix.controllers.api;
 
-import antlr.Token;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -26,12 +25,13 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static pl.bony.gnomix.security.SecurityUtils.REFRESH_TOKEN_TTL;
 
 @RestController
 @Slf4j
 public class TokenController {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public TokenController(UserRepository userRepository) {
@@ -55,12 +55,12 @@ public class TokenController {
 
                 String accessToken = JWT.create()
                         .withSubject(user.getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + (15 * 60 * 1000)))
+                        .withExpiresAt(new Date(System.currentTimeMillis() + (REFRESH_TOKEN_TTL)))
                         .withIssuer(request.getRequestURI())
-                        .withClaim("roles", user.getRoles().stream().map( role -> {
-                            return "ROLE_"+role;
-                        }).collect(Collectors.toList()))
+                        .withClaim("roles", user.getRoles().stream()
+                                .map(role -> "ROLE_" + role).collect(Collectors.toList()))
                         .sign(algorithm);
+
 
                 response.addHeader("access_token", accessToken);
                 response.addHeader("refresh_token", refreshToken);
@@ -88,6 +88,4 @@ public class TokenController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing refresh token in the header");
         }
     }
-
-
 }

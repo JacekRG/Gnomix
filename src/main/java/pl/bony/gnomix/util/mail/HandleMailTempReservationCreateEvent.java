@@ -19,6 +19,6 @@ public class HandleMailTempReservationCreateEvent implements ApplicationListener
     @Override
     public void onApplicationEvent(TempReservationCreatedEvent event) {
         System.out.println("MAIL: Handle event by implementing AppListener");
-        this.emailService.sendConfirmationEmail(event.getEmail(),event.getReservationId());
+        this.emailService.sendConfirmationEmail(event.getEmail(), event.getReservationId());
     }
 }

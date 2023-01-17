@@ -1,7 +1,6 @@
 package pl.bony.gnomix.controllers.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,10 +24,11 @@ public class RestReservationController {
     @PostMapping("api/createTemporaryReservation")
     public void createTempReservation(@Valid @RequestBody ReservationCreateTmpRestDTO payload) {
 
-        boolean result =  this.reservationService
-                .createTemporaryReservation(payload.getRoomId(), payload.getFromDate(), payload.getToDate(), payload.getEmail());
+        boolean result = this.reservationService
+                .createTemporaryReservation(payload.getRoomId(), payload.getFromDate(),
+                        payload.getToDate(), payload.getEmail());
 
-        if(!result) {
+        if (!result) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unable to find room with such ID");
         }
     }

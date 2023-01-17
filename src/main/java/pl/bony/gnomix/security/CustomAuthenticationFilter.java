@@ -8,14 +8,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.bony.gnomix.security.model.UserPrincipal;
 import pl.bony.gnomix.security.model.UsernameAndPasswordAuthenticationRequest;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -25,10 +22,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static pl.bony.gnomix.security.SecurityUtils.REFRESH_TOKEN_TTL;
+import static pl.bony.gnomix.security.SecurityUtils.TOKEN_TTL;
 
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
@@ -37,7 +36,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+            throws AuthenticationException {
 
 
         try {
@@ -57,26 +57,31 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain chain,
+            Authentication authResult) throws IOException {
+
         UserPrincipal user = (UserPrincipal) authResult.getPrincipal();
         Algorithm algorithm = SecurityUtils.getAlgorithm();
         String accessToken = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + (15 * 60 * 1000)))
+                .withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_TTL))
                 .withIssuer(request.getRequestURI())
-                .withClaim("roles", user.getAuthorities().stream().map( role -> {
+                .withClaim("roles", user.getAuthorities().stream().map(role -> {
                     String name = role.getAuthority();
-                    return "ROLE_"+name;
+                    return "ROLE_" + name;
                 }).collect(Collectors.toList()))
                 .sign(algorithm);
 
         String refreshToken = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + (120 * 60 * 1000)))
+                .withExpiresAt(new Date(System.currentTimeMillis() + REFRESH_TOKEN_TTL))
                 .withIssuer(request.getRequestURI())
-                .withClaim("roles", user.getAuthorities().stream().map( role -> {
+                .withClaim("roles", user.getAuthorities().stream().map(role -> {
                     String name = role.getAuthority();
-                    return "ROLE_"+name;
+                    return "ROLE_" + name;
                 }).collect(Collectors.toList()))
                 .sign(algorithm);
 

@@ -16,7 +16,8 @@ public class RoomAvailableDTO {
     private final String description;
     private final List<String> photosUrls;
 
-    public RoomAvailableDTO(String number, long id, List<BedType> beds, int size, String description, List<String> photosUrls) {
+    public RoomAvailableDTO(String number, long id, List<BedType> beds, int size,
+                            String description, List<String> photosUrls) {
         this.number = number;
         this.id = id;
         this.beds = beds;
@@ -61,10 +62,16 @@ public class RoomAvailableDTO {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         RoomAvailableDTO that = (RoomAvailableDTO) o;
-        return id == that.id && size == that.size && Objects.equals(number, that.number) && Objects.equals(beds, that.beds) && Objects.equals(description, that.description) && Objects.equals(photosUrls, that.photosUrls);
+        return id == that.id && size == that.size && Objects.equals(number, that.number)
+                && Objects.equals(beds, that.beds) && Objects.equals(description, that.description)
+                && Objects.equals(photosUrls, that.photosUrls);
     }
 
     @Override

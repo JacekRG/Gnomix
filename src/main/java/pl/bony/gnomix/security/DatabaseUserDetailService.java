@@ -12,8 +12,12 @@ import pl.bony.gnomix.security.model.UserRepository;
 @Service
 public class DatabaseUserDetailService implements UserDetailsService {
 
+    private final UserRepository repo;
+
     @Autowired
-    UserRepository repo;
+    public DatabaseUserDetailService(UserRepository userRepository) {
+        this.repo = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -1,9 +1,11 @@
 package pl.bony.gnomix.util.mail;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
 @Service
 public class EmailService {
     private final JavaMailSender sender;
@@ -13,14 +15,17 @@ public class EmailService {
     private String domain;
     @Value("${gnomix.port}")
     private String port;
-    private String confirmationEndpoint = "reservations/confirm";
+    private final String confirmationEndpoint = "reservations/confirm";
+
     @Autowired
     public EmailService(JavaMailSender sender) {
         this.sender = sender;
     }
+
     public void sendConfirmationEmail(String email, long reservationId) {
         SimpleMailMessage mail = new SimpleMailMessage();
-        String endpoint = String.format("%s://%s:%s/%s/%d", protocol, domain, port, confirmationEndpoint, reservationId);
+        String endpoint = String.format("%s://%s:%s/%s/%d", protocol, domain,
+                port, confirmationEndpoint, reservationId);
         mail.setTo(email);
         mail.setFrom("cebula.wir.pl");
         mail.setSubject("Potwierdź rezerwację");

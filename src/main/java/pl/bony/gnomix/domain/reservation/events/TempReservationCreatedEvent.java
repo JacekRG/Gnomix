@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 
 public class TempReservationCreatedEvent extends ApplicationEvent {
 
-    public final LocalDateTime creationDate;
-    public final String email;
-    public final long reservationId;
+    private final LocalDateTime creationDate;
+    private final String email;
+    private final long reservationId;
 
 
     public TempReservationCreatedEvent(Object context, String email, long reservationId) {

@@ -1,6 +1,5 @@
 package pl.bony.gnomix.domain.audit;
 
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;

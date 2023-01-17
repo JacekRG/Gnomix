@@ -9,19 +9,19 @@ import java.time.LocalDate;
 public class ReservationCreateTmpRestDTO {
 
     @NotNull
-    private long roomId;
+    private final long roomId;
 
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate fromDate;
+    private final LocalDate fromDate;
 
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate toDate;
+    private final LocalDate toDate;
 
     @Email
     @NotNull
-    private String email;
+    private final String email;
 
     public ReservationCreateTmpRestDTO(long roomId, LocalDate fromDate, LocalDate toDate, String email) {
         this.roomId = roomId;

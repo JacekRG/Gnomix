@@ -25,6 +25,5 @@ public class RoomRepositoryTest {
         Optional<Room> result = this.roomRepository.findFirstByNumberCaseInsensitive("1A");
 
         assertTrue(result.isPresent());
-;
     }
 }

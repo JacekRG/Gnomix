@@ -12,6 +12,8 @@ import java.time.LocalDate;
 @Entity
 public class Guest {
 
+    public static final int MAX_PHONE_LENGHT = 20;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -23,7 +25,7 @@ public class Guest {
     private boolean vip;
     private String customerId;
 
-    @Column(name="phone")
+    @Column(name = "phone")
     private String phoneNumber;
 
 
@@ -42,7 +44,7 @@ public class Guest {
 
     public Guest(String firstName, String lastName, LocalDate dateOfBirth) {
         this.firstName = firstName;
-        this.lastName= lastName;
+        this.lastName = lastName;
         this.birthDate = dateOfBirth;
     }
 
@@ -51,7 +53,6 @@ public class Guest {
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
-//        this.vip = false;
         this.customerId = customerId;
     }
 
@@ -72,7 +73,7 @@ public class Guest {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        if(phoneNumber.length()>20){
+        if (phoneNumber.length() > MAX_PHONE_LENGHT) {
             throw new IllegalArgumentException("Phone number too long");
         }
         this.phoneNumber = phoneNumber;
