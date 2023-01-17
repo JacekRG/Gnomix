@@ -18,11 +18,6 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
@@ -50,15 +45,15 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>4.0.0-2</version>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>2.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -94,6 +89,7 @@
             <artifactId>java-jwt</artifactId>
             <version>3.19.4</version>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -114,8 +110,8 @@
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <configuration>
-                    <url>jdbc:mysql://mysql0.small.pl:3306/m2559_spring_kompletna</url>
-                    <user>m2559_jacekrg</user>
+                    <url>jdbc:mysql://mysql0.small.pl:3306/m2561_spring_kompletna</url>
+                    <user>m2561_jacekrg1</user>
                     <password>alamakota2@A</password>
                 </configuration>
             </plugin>
